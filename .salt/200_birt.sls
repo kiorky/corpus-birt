@@ -35,6 +35,31 @@ download-jarp:
           -P "/var/lib/tomcat7/webapps/birt/WEB-INF/lib"
     - unless: test -e /var/lib/tomcat7/webapps/birt/WEB-INF/lib/postgresql-9.4-1201.jdbc41.jar
 
+download-jar-mail:
+  cmd.run:
+    - use_vt: true
+    - require:
+      - cmd: viewer
+    - require_in:
+      - cmd: postops
+    - name: |
+        set -ex
+        wget -c "https://maven.java.net/content/repositories/releases/com/sun/mail/javax.mail/1.5.6/javax.mail-1.5.6.jar" \
+          -P "/var/lib/tomcat7/webapps/birt/WEB-INF/lib"
+    - unless: test -e /var/lib/tomcat7/webapps/birt/WEB-INF/lib/javax.mail-1.5.6.jar
+
+download-jar-activation:
+  cmd.run:
+    - use_vt: true
+    - require:
+      - cmd: viewer
+    - require_in:
+      - cmd: postops
+    - name: |
+        set -ex
+        cp {{cfg.project_root}}/activation.jar /var/lib/tomcat7/webapps/birt/WEB-INF/lib/
+    - unless: test -e /var/lib/tomcat7/webapps/birt/WEB-INF/lib/activation.jar
+
 download-jarm:
   cmd.run:
     - use_vt: true
