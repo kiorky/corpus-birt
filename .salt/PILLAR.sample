@@ -16,17 +16,40 @@
 # but lists are overidden
 makina-projects.projectname:
   data:
-    opt: value
-    password: SecretToBeChangedInsidePillar
+    host: localhost
+    port: 8080
+    archive: "http://ftp.heanet.ie/mirrors/eclipse/birt/downloads/drops/R-R1-4.6.0-201606072112/birt-runtime-4.6.0-20160607.zip"
+    nginx_upstreams: salt://makina-projects/{name}/files/nginx.upstreams.conf
+    nginx_vhost: salt://makina-projects/{name}/files/nginx.content.conf
+    www: "{data_root}/www"
+    domain: "{domain}"
+    users:
+      {% for i in ['admin'] %}
+      - {{i}}:
+          roles: [admin, manager, tomcat]
+          password: "{{salt['mc_utils.generate_stored_password']('birt'+i)}}"
+      {% endfor %}
+    http_users:
+      {% for i in ['admin', 'reader'] %}
+      - {{i}}: "{{salt['mc_utils.generate_stored_password']('birt'+i)}}"
+      {% endfor %}
+    htaccess: "/etc/{name}.webaccess"
+    configs:
+      {% for i, fdata in {
+             '/var/lib/tomcat7/webapps/ROOT/index.html': {
+               'user': 'tomcat7',
+               'group': 'tomcat7',
+              },
+             '/etc/tomcat7/tomcat-users.xml': {},
+    }.items() %}
+      "{{i}}":
+        {% if i.startswith('/') %}
+        target: {{i}}
+        {% endif %}
+        mode: {{ fdata.get('mode', '640') }}
+        user: {{ fdata.get('user', "'{user}'") }}
+        group: {{ fdata.get('group', "'{group}'") }}
+      {% endfor%}
     fixperms_cron_periodicity: "0 */2 * * *"
-  env_defaults:
-    dev:
-      opt: value2
-  os_defaults:
-    Ubuntu:
-# os  filter
-      opt: value1
-    Debian:
-# os familly filter
-      opt1: value11
 # vim:set ft=sls:
+

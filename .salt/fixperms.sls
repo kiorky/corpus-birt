@@ -44,6 +44,24 @@
                   fi
                 fi
             done
+            find -H \
+              "/var/lib/tomcat7/webapps/birt" \
+              \(\
+                \(     -type f -and \( -not -user tomcat7 -or -not -group tomcat7                      \) \)\
+                -or \( -type d -and \( -not -user tomcat7 -or -not -group tomcat7 -or -not -perm -2000 \) \)\
+              \)\
+              |\
+              while read i;do
+                if [ ! -h "${i}" ];then
+                  if [ -d "${i}" ];then
+                    chmod g-s "${i}"
+                    chown tomcat7:tomcat7 "${i}"
+                    chmod g+s "${i}"
+                  elif [ -f "${i}" ];then
+                    chown tomcat7:tomcat7 "${i}"
+                  fi
+                fi
+            done
             "{{locs.resetperms}}" -q --no-acls --no-recursive\
               --user root --group root --dmode '0555' --fmode '0555' \
               --paths "{{cfg.project_dir}}/global-reset-perms.sh" \
