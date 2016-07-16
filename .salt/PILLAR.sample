@@ -14,6 +14,12 @@
 #
 # think that dicts are updated/merged with default
 # but lists are overidden
+
+
+# copy to pillar
+makina-states.localsettings.jdk.default_jdk_ver: 8
+
+
 makina-projects.projectname:
   data:
     host: localhost
@@ -40,6 +46,7 @@ makina-projects.projectname:
                'user': 'tomcat7',
                'group': 'tomcat7',
               },
+             '/etc/default/tomcat7': {},
              '/etc/tomcat7/tomcat-users.xml': {},
     }.items() %}
       "{{i}}":
