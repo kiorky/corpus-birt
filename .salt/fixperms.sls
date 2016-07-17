@@ -15,7 +15,7 @@
             # in most cases
             datagroup="{{cfg.group}}"
             groupadd -r $datagroup 2>/dev/null || /bin/true
-            users="nginx www-data"
+            users="nginx www-data tomcat7"
             for i in $users;do
               gpasswd -a $i $datagroup 2>/dev/null || /bin/true
             done
@@ -44,7 +44,14 @@
                   fi
                 fi
             done
+            "{{locs.resetperms}}" -q --no-acls --no-recursive\
+              --user root --group root --dmode '0555' --fmode '0555' \
+              --paths "{{cfg.project_dir}}/global-reset-perms.sh" \
+              --paths "{{cfg.project_root}}"/.. \
+              --paths "{{cfg.project_root}}"/../..;
+            chmod o+x "{{cfg.data_root}}"
             find -H \
+              "{{cfg.data_root}}/reports" \
               "/var/lib/tomcat7/webapps/birt" \
               \(\
                 \(     -type f -and \( -not -user tomcat7 -or -not -group tomcat7                      \) \)\
@@ -62,11 +69,6 @@
                   fi
                 fi
             done
-            "{{locs.resetperms}}" -q --no-acls --no-recursive\
-              --user root --group root --dmode '0555' --fmode '0555' \
-              --paths "{{cfg.project_dir}}/global-reset-perms.sh" \
-              --paths "{{cfg.project_root}}"/.. \
-              --paths "{{cfg.project_root}}"/../..;
   cmd.run:
     - name: {{cfg.project_dir}}/global-reset-perms.sh
     - cwd: {{cfg.project_root}}

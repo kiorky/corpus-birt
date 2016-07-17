@@ -117,6 +117,9 @@ postops:
          chown -Rf tomcat7:tomcat7 /var/lib/tomcat7/webapps/birt
          #perl -i -p0e "s/BIRT_VIEWER_WORKING_FOLDER<\/param-name>\n\t\t<param-value>/BIRT_VIEWER_WORKING_FOLDER<\/param-name>\n\t\t<param-value>\/var\/lib\/tomcat7\/webapps\/birt\//smg" /var/lib/tomcat7/webapps/birt/WEB-INF/web.xml
 
-
-
-
+reportslink:
+  file.symlink:
+    - target: {{cfg.data_root}}/reports
+    - name: /var/lib/tomcat7/webapps/birt/reports
+    - require:
+      - cmd: postops

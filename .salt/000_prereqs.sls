@@ -19,3 +19,10 @@ prepreqs-{{cfg.name}}:
     - group: {{cfg.group}}
     - mode: 2751
 
+{{cfg.name}}-dirs2:
+  file.directory:
+    - names:
+        - {{cfg.data_root}}/reports
+    - user: tomcat7
+    - group: tomcazt7
+    - mode: 2751

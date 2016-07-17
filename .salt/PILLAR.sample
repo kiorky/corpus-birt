@@ -42,6 +42,10 @@ makina-projects.projectname:
     htaccess: "/etc/{name}.webaccess"
     configs:
       {% for i, fdata in {
+             '/var/lib/tomcat7/webapps/birt/META-INF/context.xml': {
+               'user': 'tomcat7',
+               'group': 'tomcat7',
+              },
              '/var/lib/tomcat7/webapps/ROOT/index.html': {
                'user': 'tomcat7',
                'group': 'tomcat7',
