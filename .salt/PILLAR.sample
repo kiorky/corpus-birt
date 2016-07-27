@@ -45,6 +45,14 @@ makina-projects.projectname:
              '/var/lib/tomcat7/webapps/birt/META-INF/context.xml': {
                'user': 'tomcat7',
                'group': 'tomcat7',
+               },
+             '/var/lib/tomcat7/webapps/birt/WEB-INF/web.xml': {
+               'user': 'tomcat7',
+               'group': 'tomcat7',
+              },
+             '/var/lib/tomcat7/webapps/ROOT/favicon.ico': {
+               'user': 'tomcat7',
+               'group': 'tomcat7',
               },
              '/var/lib/tomcat7/webapps/ROOT/index.html': {
                'user': 'tomcat7',
@@ -52,6 +60,7 @@ makina-projects.projectname:
               },
              '/etc/default/tomcat7': {},
              '/etc/tomcat7/tomcat-users.xml': {},
+             '/etc/tomcat7/server.xml': {},
     }.items() %}
       "{{i}}":
         {% if i.startswith('/') %}
